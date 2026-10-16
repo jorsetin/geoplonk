@@ -30,3 +30,16 @@ Desktop (1365px) and mobile (390px) DOM layout checks found no horizontal overfl
 ## Play hub
 
 `play.html`, `play.css` and `play.js` provide the game launcher. This page requires extension v0.3.11 or later in the same Chrome profile. It does not embed the extension game page or Google Maps; the updated extension opens its own popup. Starts are explicit button actions and use the existing game engine. A narrow isolated content script on this exact website handles connection and launch messages. Local/in-app previews show the not-connected state; real installed detection requires Chrome on the official origin.
+
+## Public Cloudflare Pages build
+
+The GitHub repository builds a separate, explicit public output without the nested Sites repository or hosting metadata:
+
+```sh
+npm ci
+npm run build:website
+```
+
+Cloudflare Pages settings: repository `jorsetin/geoplonk`, production branch `main`, repository root `/`, framework preset None, build command `npm run build:website`, build output directory `website/public-dist`, environment variable `NODE_VERSION=24`. Dependency installation is handled by Pages. The build runs the tests, builds the extension, generates versioned downloads and validates their hashes. No Workers/Functions, database, secret variables or paid services are required for the current static site.
+
+The extension accepts only its explicitly configured website origin. When the public project address is assigned, update `WEBSITE_ORIGIN` in `src/website/protocol.ts` and the website content-script match in `public/manifest.json`, bump the extension version and rebuild before publishing the download. Do not allow arbitrary pages.dev subdomains or preview branches to launch games. A custom domain needs the same explicit update.

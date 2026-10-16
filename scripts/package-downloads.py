@@ -16,7 +16,11 @@ def archive(name, entries):
     output = downloads / name
     with zipfile.ZipFile(output, 'w', zipfile.ZIP_DEFLATED) as target:
         for path, relative in entries:
-            target.write(path, relative)
+            # Stable metadata makes repeat builds of the same source reproducible.
+            entry = zipfile.ZipInfo(relative, date_time=(2020, 1, 1, 0, 0, 0))
+            entry.compress_type = zipfile.ZIP_DEFLATED
+            entry.external_attr = 0o100644 << 16
+            target.writestr(entry, path.read_bytes())
     return {'file': name, 'bytes': output.stat().st_size, 'sha256': hashlib.sha256(output.read_bytes()).hexdigest()}
 
 extension = archive(f'geoplonk-chrome-v{version}.zip', [(p, str(Path('geoplonk') / p.relative_to(root / 'dist'))) for p in sorted((root / 'dist').rglob('*')) if p.is_file() and not p.name.startswith('.')])

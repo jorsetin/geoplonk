@@ -6,7 +6,8 @@
   "scripts": {
     "build": "tsc --noEmit && vite build && vite build --config vite.content.config.ts && vite build --config vite.render.config.ts && vite build --config vite.render-settings.config.ts && vite build --config vite.background.config.ts && vite build --config vite.website.config.ts && node scripts/check-embedded-assets.mjs",
     "test": "vitest run",
-    "check": "npm test && npm run build"
+    "check": "npm test && npm run build",
+    "build:website": "npm run check && python3 scripts/package-downloads.py && node scripts/build-public-site.mjs"
   },
   "dependencies": {
     "@luomus/leaflet-smooth-wheel-zoom": "^1.0.0",

@@ -26,3 +26,6 @@ docs/live-check-results.json
 # Keep deployment identity and generated downloads out of the source repository.
 website/geoplonk/.openai/
 website/geoplonk/dist/downloads/
+
+# Generated public-hosting output.
+website/public-dist/

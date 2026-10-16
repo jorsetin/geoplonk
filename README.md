@@ -1,6 +1,6 @@
 # geoplonk
 
-A local Chrome Manifest V3 customiser for the original Google Maps website, built with TypeScript, React and Vite. Checkpoint one is implemented; Random Explorer, popup exploration windows and the guessing game are planned.
+A Chrome Manifest V3 customiser for the original Google Maps website, built with TypeScript, React and Vite. Includes Clean View, Random Explorer and singleplayer geography guessing with configurable rounds, movement rules, local statistics and end-of-game map reviews. A separate website provides downloads and launches games through the installed extension.
 
 ## Build and load
 
@@ -38,7 +38,7 @@ No private Google APIs, imagery reads, shader-source logging, location history, 
 
 ## Verification
 
-`npm run check` runs regression tests, TypeScript checking and all production bundles. See [the testing guide](docs/TESTING.md), [live results](docs/live-check-results.json) and [the architecture/checkpoint plan](docs/IMPLEMENTATION_PLAN.md).
+`npm run check` runs regression tests, TypeScript checking and all production bundles. See [the testing guide](docs/TESTING.md) and [the architecture/checkpoint plan](docs/IMPLEMENTATION_PLAN.md).
 
 `scripts/live-checks.cua.mjs` runs repeatable native-input checks through the connected Chrome/CUA interface. It tests panorama position, orientation and FOV rather than selector counts, waits for Maps' delayed URL updates, and can restore original preferences and the starting URL. See the testing guide for use.
 
