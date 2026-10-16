@@ -1,0 +1,31 @@
+import {expect,test,vi} from 'vitest';
+import {WEBSITE_ORIGIN} from '../src/website/protocol';
+test('website launch goes through the actual worker, preserves saved games and recovers from a failed popup',async()=>{
+ const local:Record<string,any>={},session:Record<string,any>={};let listener:any;
+ const area=(data:Record<string,any>)=>({get:async(key:string)=>({[key]:structuredClone(data[key])}),set:async(values:Record<string,any>)=>{for(const key in values)data[key]=structuredClone(values[key]);},remove:async(keys:string|string[])=>{for(const key of Array.isArray(keys)?keys:[keys])delete data[key];}});
+ const create=vi.fn(async(_options:any)=>({id:21,tabs:[{id:22}]}));
+ const tabCreate=vi.fn(async()=>({id:30})),tabUpdate=vi.fn(async()=>({})),query=vi.fn(async()=>[]);
+ vi.stubGlobal('chrome',{storage:{local:area(local),session:area(session)},windows:{create,get:async()=>({id:21,type:'popup'}),update:async()=>({}),onRemoved:{addListener:()=>{}}},tabs:{get:async()=>({id:22,windowId:21}),create:tabCreate,update:tabUpdate,query},runtime:{getManifest:()=>({version:'0.3.11'}),getURL:(path:string)=>`chrome-extension://website-test/${path}`,onMessage:{addListener:(fn:any)=>{listener=fn;}}}});
+ await import('../src/background/index');
+ const website={url:WEBSITE_ORIGIN+'/play.html',origin:WEBSITE_ORIGIN,frameId:0,tab:{id:4,windowId:3}};
+ const send=(message:any,sender:any=website)=>new Promise<any>(resolve=>listener(message,sender,resolve));
+ expect((await send({type:'WEBSITE_BRIDGE',action:'STATUS'})).hasSavedGame).toBe(false);
+ expect((await send({type:'GAME_START',rounds:3,duration:0})).ok).toBe(false);
+ const start={type:'WEBSITE_BRIDGE',action:'START_SINGLEPLAYER',rounds:3,duration:0,mode:'nmpz'};
+ expect((await send(start,{...website,url:'https://evil.example'})).ok).toBe(false);
+ create.mockRejectedValueOnce(Error('Popup failed'));
+ expect((await send(start)).ok).toBe(false);expect(local['game.state.v1'].game).toBeNull();expect(session['explorer.session.v1']).toBeUndefined();
+ expect((await send(start)).ok).toBe(true);
+ const game=structuredClone(local['game.state.v1'].game);expect(game.targets).toHaveLength(3);expect(game.duration).toBe(0);expect(game.phase).toBe('loading');expect(create.mock.calls.at(-1)![0].type).toBe('popup');expect(new URL(create.mock.calls.at(-1)![0].url).hostname).toBe('www.google.com');
+ expect(local['cleanView.v1']).toMatchObject({disableMoving:true,disablePanning:true,disableZooming:true});
+ expect((await send(start)).ok).toBe(false);expect(local['game.state.v1'].game).toEqual(game);
+ expect((await send({type:'WEBSITE_BRIDGE',action:'OPEN_EXPLORER'})).ok).toBe(false);
+ const status=await send({type:'WEBSITE_BRIDGE',action:'STATUS'});expect(status.hasSavedGame).toBe(true);expect(status.game).toBeUndefined();expect(status.stats).toBeUndefined();
+ expect((await send({type:'WEBSITE_BRIDGE',action:'OPEN_GAME'})).ok).toBe(true);expect(tabCreate).toHaveBeenCalledWith({url:'chrome-extension://website-test/game.html'});
+ expect((await send({type:'WEBSITE_BRIDGE',action:'RESUME_SINGLEPLAYER'})).ok).toBe(true);expect(tabUpdate).toHaveBeenCalledWith(22,{url:expect.stringContaining('https://www.google.com/maps/')});
+ // A timed-out saved game must open its result manager rather than doing nothing.
+ local['game.state.v1'].game.phase='exploring';local['game.state.v1'].game.deadline=Date.now()-1000;
+ expect((await send({type:'WEBSITE_BRIDGE',action:'RESUME_SINGLEPLAYER'})).ok).toBe(true);expect(local['game.state.v1'].game.phase).toBe('result');expect(tabCreate).toHaveBeenCalledTimes(2);
+ local['game.state.v1'].game.phase='complete';expect((await send({type:'WEBSITE_BRIDGE',action:'OPEN_EXPLORER'})).ok).toBe(true);expect(session['explorer.session.v1'].mode).toBe('explorer');
+ vi.unstubAllGlobals();
+});

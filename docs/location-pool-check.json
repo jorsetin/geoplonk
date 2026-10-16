@@ -1,0 +1,144 @@
+{
+  "checkedOn": "2026-10-15",
+  "method": "Project-authored coordinates opened on the original Maps website. Store only the resolved public URL coordinates and panorama ID, not imagery. Added entries showed Street View with native road-panorama URL type 2e0 and no unavailable-imagery notice.",
+  "newYorkReplacement": {
+    "lat": 40.7536626,
+    "lng": -73.9816415,
+    "pano": "6zJfD9C649dBENW-e761Kw"
+  },
+  "added": [
+    {
+      "id": "bavaria",
+      "name": "Bavaria, Germany",
+      "lat": 49.7572626,
+      "lng": 9.970816,
+      "pano": "rTXQQQRC94YQ-RQ96oEeSA"
+    },
+    {
+      "id": "new-zealand",
+      "name": "Waikato, New Zealand",
+      "lat": -37.8935615,
+      "lng": 175.4636137,
+      "pano": "vLas2j0r7dYUlS1OU3zSlw"
+    },
+    {
+      "id": "norway",
+      "name": "Vestland, Norway",
+      "lat": 60.3674003,
+      "lng": 6.1435529,
+      "pano": "b7ZMti_xV0BBzKSDOtbiRg"
+    },
+    {
+      "id": "japan-road",
+      "name": "Saitama, Japan",
+      "lat": 35.8800897,
+      "lng": 139.6026485,
+      "pano": "zQkbCdnkDrTwGPRRD8b67g"
+    },
+    {
+      "id": "chicago",
+      "name": "Chicago, United States",
+      "lat": 41.9410853,
+      "lng": -87.6481291,
+      "pano": "N-9gbAGTKN3ro-wiwIUIDQ"
+    },
+    {
+      "id": "mexico-city",
+      "name": "Mexico City, Mexico",
+      "lat": 19.4032235,
+      "lng": -99.1686841,
+      "pano": "NSyayrDacQTUhmUPUmloDg"
+    },
+    {
+      "id": "buenos-aires",
+      "name": "Buenos Aires, Argentina",
+      "lat": -34.6012111,
+      "lng": -58.4152353,
+      "pano": "oC8QTAMTZSqeKpk70Zjazg"
+    },
+    {
+      "id": "sao-paulo",
+      "name": "São Paulo, Brazil",
+      "lat": -23.5631767,
+      "lng": -46.6941688,
+      "pano": "vETQ5fu-hDcCTjbGKCvjCQ"
+    },
+    {
+      "id": "singapore",
+      "name": "Singapore",
+      "lat": 1.330935,
+      "lng": 103.8470542,
+      "pano": "oUiTF83bpITk3_Ck_zrqwA"
+    },
+    {
+      "id": "bangkok",
+      "name": "Bangkok, Thailand",
+      "lat": 13.7701415,
+      "lng": 100.5294856,
+      "pano": "byDdgia9--sAALTf17Yegg"
+    },
+    {
+      "id": "taipei",
+      "name": "Taipei, Taiwan",
+      "lat": 25.0516676,
+      "lng": 121.5495552,
+      "pano": "NIoaV37e5gpjijS-T-eCHg"
+    },
+    {
+      "id": "melbourne",
+      "name": "Melbourne, Australia",
+      "lat": -37.8007472,
+      "lng": 144.9794689,
+      "pano": "AqcKDYOD1cKA5uxOjefiGA"
+    },
+    {
+      "id": "hobart",
+      "name": "Tasmania, Australia",
+      "lat": -42.8793001,
+      "lng": 147.3228137,
+      "pano": "bAbYKbx_KwQf8aJM9KwPFg"
+    },
+    {
+      "id": "accra",
+      "name": "Accra, Ghana",
+      "lat": 5.5684406,
+      "lng": -0.2070621,
+      "pano": "nUKNK-OBIXCeTuG-V_YWEA"
+    },
+    {
+      "id": "dakar",
+      "name": "Dakar, Senegal",
+      "lat": 14.6963834,
+      "lng": -17.4518273,
+      "pano": "HCYhcqso8PDxziYjc_P5aA"
+    },
+    {
+      "id": "reykjavik",
+      "name": "Reykjavík, Iceland",
+      "lat": 64.1329278,
+      "lng": -21.9173056,
+      "pano": "iYaBCHRLmQr_E07EZPx0AA"
+    },
+    {
+      "id": "gothenburg",
+      "name": "Gothenburg, Sweden",
+      "lat": 57.7133134,
+      "lng": 12.0139141,
+      "pano": "s9ClRjuT3cyzS0vQeiIqYw"
+    },
+    {
+      "id": "warsaw",
+      "name": "Warsaw, Poland",
+      "lat": 52.233206,
+      "lng": 21.02674,
+      "pano": "EVO0GudB3XlvGTl21PdfMQ"
+    },
+    {
+      "id": "vilnius",
+      "name": "Vilnius, Lithuania",
+      "lat": 54.701125,
+      "lng": 25.2672739,
+      "pano": "SQP_8qpSyJ3gYUl79xh7Cw"
+    }
+  ]
+}

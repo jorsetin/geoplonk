@@ -1,0 +1,13 @@
+{
+  "version": "0.3.13",
+  "extension": {
+    "file": "geoplonk-chrome-v0.3.13.zip",
+    "bytes": 1007840,
+    "sha256": "d7ec1af1f3e7fbec647d0de25b1e035e11c41ead85846f94c81d76bc52845292"
+  },
+  "source": {
+    "file": "geoplonk-source-v0.3.13.zip",
+    "bytes": 1004187,
+    "sha256": "276e93c7cd175d8ba79741f94e767682a22646e4d66aca55a31ea5d3075d4d19"
+  }
+}

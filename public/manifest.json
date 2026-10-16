@@ -1,0 +1,75 @@
+{
+  "manifest_version": 3,
+  "name": "geoplonk",
+  "version": "0.3.13",
+  "description": "Optional, reversible interface enhancements for Google Maps.",
+  "permissions": [
+    "storage",
+    "activeTab"
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "geoplonk"
+  },
+  "content_scripts": [
+    {
+      "matches": [
+        "https://www.google.com/maps/*",
+        "https://www.google.com/maps",
+        "https://maps.google.com/*"
+      ],
+      "js": [
+        "render.js"
+      ],
+      "run_at": "document_start",
+      "world": "MAIN"
+    },
+    {
+      "matches": [
+        "https://www.google.com/maps/*",
+        "https://www.google.com/maps",
+        "https://maps.google.com/*"
+      ],
+      "js": [
+        "render-settings.js"
+      ],
+      "run_at": "document_start"
+    },
+    {
+      "matches": [
+        "https://www.google.com/maps/*",
+        "https://www.google.com/maps",
+        "https://maps.google.com/*"
+      ],
+      "js": [
+        "content.js"
+      ],
+      "run_at": "document_start"
+    },
+    {
+      "matches": [
+        "https://geoplonk-explore.maplefrost11.chatgpt.site/*"
+      ],
+      "js": [
+        "website-bridge.js"
+      ],
+      "run_at": "document_idle"
+    }
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "web_accessible_resources": [
+    {
+      "resources": [
+        "game.html",
+        "assets/*"
+      ],
+      "matches": [
+        "https://www.google.com/*",
+        "https://maps.google.com/*"
+      ]
+    }
+  ]
+}

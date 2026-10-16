@@ -1,0 +1,28 @@
+node_modules/
+dist/
+.DS_Store
+
+# Local visual QA capture; do not redistribute Maps imagery.
+docs/clean-view-verified.png
+docs/street-view-verified.png
+
+docs/random-explorer-verified.png
+docs/explorer-no-spoilers-verified.png
+docs/floor-picker-background-verified.png
+
+# Local UI verification containing Google tiles.
+docs/results-032.png
+docs/gameplay-032.png
+
+docs/geoplonk-033.png
+
+docs/geoplonk-034.png
+
+docs/geoplonk-035.png
+
+# Local QA evidence; screenshots can contain third-party Maps imagery.
+docs/*.png
+docs/live-check-results.json
+# Keep deployment identity and generated downloads out of the source repository.
+website/geoplonk/.openai/
+website/geoplonk/dist/downloads/
