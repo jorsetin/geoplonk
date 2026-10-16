@@ -139,3 +139,7 @@ A separate content script now matches only the official website origin in additi
 ## End-of-game summary (v0.3.13)
 
 Completed games show every round's location, distance, time and score, with a total and selectable map review. Skipped rounds and expired timers are labelled. The manager's **Review last game** button reopens the most recent completed results until another game replaces them. **Play again** uses the same round count and timer.
+
+## Public website (v0.3.14)
+
+The public deployment uses https://geoplonk.pages.dev and builds automatically from GitHub `main` with Cloudflare Pages. The Play page requires extension v0.3.14 or later; earlier builds connect only to the legacy ChatGPT-hosted preview. `npm run build:website` verifies the extension and assembles the static site with reproducible extension/source ZIPs. See `website/README.md` for deployment settings. No application server or database is used.

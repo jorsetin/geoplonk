@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "geoplonk",
-  "version": "0.3.13",
+  "version": "0.3.14",
   "description": "Optional, reversible interface enhancements for Google Maps.",
   "permissions": [
     "storage",
@@ -48,7 +48,7 @@
     },
     {
       "matches": [
-        "https://geoplonk-explore.maplefrost11.chatgpt.site/*"
+        "https://geoplonk.pages.dev/*"
       ],
       "js": [
         "website-bridge.js"

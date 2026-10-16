@@ -1,4 +1,4 @@
-export const WEBSITE_ORIGIN='https://geoplonk-explore.maplefrost11.chatgpt.site';
+export const WEBSITE_ORIGIN='https://geoplonk.pages.dev';
 export const WEBSITE_REQUEST='geoplonk:website-request:v1';
 export const WEBSITE_RESPONSE='geoplonk:website-response:v1';
 export type WebsiteRequest={action:'STATUS'|'START_SINGLEPLAYER'|'RESUME_SINGLEPLAYER'|'OPEN_GAME'|'OPEN_EXPLORER';rounds?:number;duration?:number;mode?:'move'|'no-move'|'nmpz'};

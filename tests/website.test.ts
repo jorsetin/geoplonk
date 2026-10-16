@@ -1,4 +1,5 @@
 import {expect,test,vi} from 'vitest';
+import manifestSource from '../public/manifest.json?raw';
 import {WEBSITE_ORIGIN,websiteRequest,websiteSender,WEBSITE_REQUEST} from '../src/website/protocol';
 import {handleWebsite} from '../src/background/website';
 import {installWebsiteBridge} from '../src/website/content';
@@ -10,7 +11,7 @@ test('website requests allow only bounded game options and a short action list',
 });
 test('website access requires the exact HTTPS origin, top-level frame and a real sender tab',()=>{
  expect(websiteSender(sender)).toBe(true);
- for(const extra of [{url:WEBSITE_ORIGIN+'.evil.example/play.html'},{url:'http://geoplonk-explore.maplefrost11.chatgpt.site/play.html'},{origin:'https://evil.example'},{frameId:1},{tab:undefined},{url:'invalid'}])expect(websiteSender({...sender,...extra})).toBe(false);
+ for(const extra of [{url:WEBSITE_ORIGIN+'.evil.example/play.html'},{url:WEBSITE_ORIGIN.replace('https:','http:')+'/play.html'},{origin:'https://evil.example'},{frameId:1},{tab:undefined},{url:'invalid'},{url:'https://preview.geoplonk.pages.dev/play.html'},{url:'https://other.pages.dev/play.html'},{url:'https://geoplonk-explore.maplefrost11.chatgpt.site/play.html'}])expect(websiteSender({...sender,...extra})).toBe(false);
 });
 function fixture(game:any=null){
  const local:Record<string,any>={'game.state.v1':{version:1,game,stats:{private:'not shared'}},'cleanView.v1':{enabled:true,hideSearch:false,disableMoving:false}};
@@ -43,4 +44,11 @@ test('the isolated bridge ignores other origins/frames and blocks overlapping la
  await listener(event({data:{channel:WEBSITE_REQUEST,requestId:'3',action:'OPEN_GAME',extensionId:'different-id'}}));await listener(event({source:{}}));await listener(event({origin:'https://evil.example'}));expect(send).not.toHaveBeenCalled();
  const first=listener(event());await listener(event({data:{channel:WEBSITE_REQUEST,requestId:'2',action:'OPEN_GAME',extensionId:'installed-id'}}));expect(send).toHaveBeenCalledOnce();expect(win.postMessage.mock.calls.at(-1)[0].result.error).toMatch(/already in progress/);
  resolve();await first;dispose();expect(win.removeEventListener).toHaveBeenCalledWith('message',listener);
+});
+
+test('the installed website match is restricted to the same canonical public origin as worker authentication',()=>{
+ const manifest=JSON.parse(manifestSource);
+ const bridge=manifest.content_scripts.find((script:any)=>script.js.includes('website-bridge.js'));
+ expect(bridge.matches).toEqual([WEBSITE_ORIGIN+'/*']);
+ expect(WEBSITE_ORIGIN).toBe('https://geoplonk.pages.dev');
 });

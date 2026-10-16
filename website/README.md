@@ -2,7 +2,9 @@
 
 The standalone, dependency-free website lives in `geoplonk/dist`. It is separate from the extension's Vite entry points and production extension bundle.
 
-The private Sites preview is https://geoplonk-explore.maplefrost11.chatgpt.site. Its persisted project identity is in `geoplonk/.openai/hosting.json`; reuse it for updates. Deployment source is tracked by the nested Sites repository. No credentials are stored here.
+The public website is https://geoplonk.pages.dev. Its automatic deployment configuration is described below.
+
+The legacy private Sites preview is https://geoplonk-explore.maplefrost11.chatgpt.site. Its persisted project identity is in `geoplonk/.openai/hosting.json`; reuse it for updates. Deployment source is tracked by the nested Sites repository. No credentials are stored here.
 
 ## Refresh downloads
 
@@ -42,4 +44,4 @@ npm run build:website
 
 Cloudflare Pages settings: repository `jorsetin/geoplonk`, production branch `main`, repository root `/`, framework preset None, build command `npm run build:website`, build output directory `website/public-dist`, environment variable `NODE_VERSION=24`. Dependency installation is handled by Pages. The build runs the tests, builds the extension, generates versioned downloads and validates their hashes. No Workers/Functions, database, secret variables or paid services are required for the current static site.
 
-The extension accepts only its explicitly configured website origin. When the public project address is assigned, update `WEBSITE_ORIGIN` in `src/website/protocol.ts` and the website content-script match in `public/manifest.json`, bump the extension version and rebuild before publishing the download. Do not allow arbitrary pages.dev subdomains or preview branches to launch games. A custom domain needs the same explicit update.
+The extension accepts only its explicitly configured website origin. The current public origin is `https://geoplonk.pages.dev` (extension v0.3.14+). When changing the public project address, update `WEBSITE_ORIGIN` in `src/website/protocol.ts` and the website content-script match in `public/manifest.json`, bump the extension version and rebuild before publishing the download. Do not allow arbitrary pages.dev subdomains or preview branches to launch games. A custom domain needs the same explicit update.
