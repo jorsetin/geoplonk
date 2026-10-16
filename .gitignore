@@ -29,3 +29,4 @@ website/geoplonk/dist/downloads/
 
 # Generated public-hosting output.
 website/public-dist/
+website/geoplonk/dist/release.json
