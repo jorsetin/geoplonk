@@ -20,3 +20,21 @@ test('Play page detects the bridge, starts only after a click and changes to res
  expect((document.querySelector('#game-setup') as HTMLFormElement).hidden).toBe(true);expect((document.querySelector('#open-explorer') as HTMLButtonElement).disabled).toBe(true);
  window.dispatchEvent(new Event('pagehide'));vi.restoreAllMocks();
 });
+
+test('initial discovery recovers when the extension loads after the first request, without launching anything',async()=>{
+ vi.useFakeTimers();document.documentElement.innerHTML=playHtml;
+ const requests:any[]=[];
+ vi.spyOn(window,'postMessage').mockImplementation((message:any)=>{
+  requests.push(message);
+  if(requests.length===1)return; // The content script is not installed yet.
+  queueMicrotask(()=>window.dispatchEvent(new MessageEvent('message',{source:window,origin:location.origin,data:{channel:'geoplonk:website-response:v1',requestId:message.requestId,extensionId:'late-installation',result:{ok:true,version:'0.3.14',hasSavedGame:false,locationCount:24}}})));
+ });
+ try{
+  new Function(playScript)();expect(document.querySelector('#connection')?.getAttribute('data-state')).toBe('checking');
+  await vi.advanceTimersByTimeAsync(250);
+  expect(document.querySelector('#connection')?.getAttribute('data-state')).toBe('connected');
+  expect(requests.map(item=>item.action)).toEqual(['STATUS','STATUS']);
+  expect((document.querySelector('#start-game') as HTMLButtonElement).disabled).toBe(false);
+  await vi.advanceTimersByTimeAsync(3000);expect(requests).toHaveLength(2);expect(vi.getTimerCount()).toBe(0);
+ }finally{window.dispatchEvent(new Event('pagehide'));vi.restoreAllMocks();vi.useRealTimers();}
+});

@@ -16,15 +16,20 @@
   function request(action,options={}){
     const requestId=crypto.randomUUID();
     return new Promise((resolve,reject)=>{
-      const timer=setTimeout(()=>{pending.delete(requestId);reject(Error('The extension did not respond. Install or update geoplonk, then reload this page in Chrome.'));},action==='STATUS'?2000:15000);
-      pending.set(requestId,{resolve,reject,timer});
-      window.postMessage({channel:REQUEST,requestId,action,extensionId,...options},location.origin);
+      const timers=[];
+      timers.push(setTimeout(()=>{pending.delete(requestId);timers.forEach(clearTimeout);reject(Error('The extension did not respond. Install or update geoplonk, then reload this page in Chrome.'));},action==='STATUS'?2000:15000));
+      pending.set(requestId,{resolve,reject,timers});
+      const post=()=>window.postMessage({channel:REQUEST,requestId,action,extensionId,...options},location.origin);
+      // The isolated extension script may load after the page's first request.
+      // Retry discovery only; game launches are always sent exactly once.
+      if(action==='STATUS')for(const delay of [250,750,1250])timers.push(setTimeout(post,delay));
+      post();
     });
   }
   window.addEventListener('message',event=>{
     if(event.source!==window||event.origin!==location.origin||event.data?.channel!==RESPONSE)return;
     const entry=pending.get(event.data.requestId);if(!entry)return;
-    pending.delete(event.data.requestId);clearTimeout(entry.timer);
+    pending.delete(event.data.requestId);entry.timers.forEach(clearTimeout);
     const result=event.data.result;
     if(!result?.ok){entry.reject(Error(typeof result?.error==='string'?result.error:'Could not connect to the extension.'));return;}
     entry.resolve({...result,extensionId:event.data.extensionId});
@@ -62,6 +67,6 @@
   document.querySelector('#manage-game').addEventListener('click',()=>void launch('OPEN_GAME'));
   document.querySelector('#open-explorer').addEventListener('click',()=>void launch('OPEN_EXPLORER'));
   window.addEventListener('focus',()=>void check());
-  window.addEventListener('pagehide',()=>{for(const entry of pending.values()){clearTimeout(entry.timer);entry.reject(Error('Page closed.'));}pending.clear();});
+  window.addEventListener('pagehide',()=>{for(const entry of pending.values()){entry.timers.forEach(clearTimeout);entry.reject(Error('Page closed.'));}pending.clear();});
   void check();
 })();
